@@ -2,7 +2,6 @@ package edu.ucsb.cs156.spring.backenddemo.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.ucsb.cs156.spring.backenddemo.services.EarthquakeQueryService;
 import edu.ucsb.cs156.spring.backenddemo.services.PublicHolidayQueryService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,11 +20,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Tag(name="Public Holiday Info from date.nager")
+@Tag(name="public-holiday-controller")
 @Slf4j
 @RestController
-@RequestMapping("/api/publicholidays")
-public class PublicHolidaysController {
+@RequestMapping("/api/publicholiday")
+public class PublicHolidayController {
     
   ObjectMapper mapper = new ObjectMapper();
 
@@ -35,8 +34,8 @@ public class PublicHolidaysController {
   @Operation(summary = "Get public holidays from year and country code", description = "JSON return format documented here: https://date.nager.at/api/v2/publicholidays/2023/us")
   @GetMapping("/get")
   public ResponseEntity<String> getPublicHoliday(
-      @Parameter(name="year", description="year", example="2003") @RequestParam String year,
-      @Parameter(name="countryCode", description="country code", example="US") @RequestParam String countryCode
+      @Parameter(name="year", description="year, e.g. 2012", example="2003") @RequestParam String year,
+      @Parameter(name="countryCode", description="2 letter country code, e.g. US, MX, CN", example="US") @RequestParam String countryCode
   ) throws JsonProcessingException {
       log.info("getPublicHoliday: year={} countryCode={}", year, countryCode);
       String result = publicHolidayQueryService.getJSON(year, countryCode);
