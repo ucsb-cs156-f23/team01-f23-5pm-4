@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.extern.slf4j.Slf4j;
-import scala.collection.concurrent.Map;
 
 import java.util.List;
 import java.util.Map;
