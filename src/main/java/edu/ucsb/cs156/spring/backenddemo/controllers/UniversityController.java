@@ -28,7 +28,7 @@ public class UniversityController {
     public ResponseEntity<String> getUniversity(
         @Parameter(name="Name", description="name to search", example="Harvard or Stanford") @RequestParam String name
     ) throws JsonProcessingException {
-        log.info("getUniversity:", name);
+        log.info("getUniversity: {}", name);
         String result = UniversityQueryService.getJSON(name);
         return ResponseEntity.ok().body(result);
     }
