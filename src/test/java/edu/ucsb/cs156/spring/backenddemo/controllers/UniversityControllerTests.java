@@ -52,6 +52,24 @@ public void test_getUniversity_notFound() throws Exception {
             .andExpect(status().isNotFound());
 }
 
+@Test
+public void test_getUniversity_missingParam() throws Exception {
+    String url = "/api/university/get";
+    mockMvc.perform(get(url).contentType("application/json"))
+            .andExpect(status().isBadRequest());
+}
+
+@Test
+public void test_getUniversity_responseContent() throws Exception {
+    String fakeJsonResult = "{ \"name\" : \"Harvard\", \"location\" : \"USA\" }";
+    when(mockUniversityQueryService.getJSON(eq("Harvard"))).thenReturn(fakeJsonResult);
+
+    String url = "/api/university/get?name=Harvard";
+    mockMvc.perform(get(url).contentType("application/json"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Harvard"))
+            .andExpect(jsonPath("$.location").value("USA"));
+}
 
 
 
