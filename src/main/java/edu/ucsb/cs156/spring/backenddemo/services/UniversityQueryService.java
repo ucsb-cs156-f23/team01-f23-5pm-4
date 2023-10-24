@@ -34,13 +34,14 @@ public class UniversityQueryService {
         log.info("name={}", name);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
+        headers.setContentType(MediaType.APPLICATION_JSON); 
         Map<String, String> uriVariables = Map.of("name", name);
-
+    
         HttpEntity<String> entity = new HttpEntity<>(headers);
-
+    
         ResponseEntity<String> re = restTemplate.exchange(ENDPOINT, HttpMethod.GET, entity, String.class,
                 uriVariables);
         return re.getBody();
     }
+    
 }
