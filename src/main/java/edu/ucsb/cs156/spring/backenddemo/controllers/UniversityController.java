@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.client.HttpClientErrorException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,18 +20,24 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Slf4j
 @RequestMapping("/api/university")
 public class UniversityController {
-        ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    UniversityQueryService UniversityQueryService;
+    private UniversityQueryService universityQueryService;
 
     @Operation(summary = "Get list of universities that match a given name", description = "Uses API documented here: http://universities.hipolabs.com/search")
     @GetMapping("/get")
     public ResponseEntity<String> getUniversity(
-            @Parameter(name = "Name", description = "name to search", example = "Harvard") @RequestParam String name)
-            throws JsonProcessingException {
+            @Parameter(name = "name", description = "name to search", example = "Harvard") @RequestParam String name) {
         log.info("getUniversity: name={}", name);
-        String result = UniversityQueryService.getJSON(name);
-        return ResponseEntity.ok().body(result);
+        try {
+            String result = universityQueryService.getJSON(name);
+            return ResponseEntity.ok().body(result);
+        } catch (HttpClientErrorException e) {
+            log.error("Error occurred while fetching data for university: {}", name, e);
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
+        } catch (Exception e) {
+            log.error("Unhandled error occurred", e);
+            return ResponseEntity.badRequest().body("An error occurred while processing the request.");
+        }
     }
 }
