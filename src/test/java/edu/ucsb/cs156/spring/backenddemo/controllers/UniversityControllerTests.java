@@ -71,6 +71,15 @@ public void test_getUniversity_responseContent() throws Exception {
             .andExpect(jsonPath("$.location").value("USA"));
 }
 
+@Test
+public void test_getUniversity_internalServerError() throws Exception {
+    when(mockUniversityQueryService.getJSON(anyString())).thenThrow(new RuntimeException());
+
+    String url = "/api/university/get?name=SomeUniversity";
+    mockMvc.perform(get(url).contentType("application/json"))
+            .andExpect(status().isBadRequest());
+}
+
 
 
 
