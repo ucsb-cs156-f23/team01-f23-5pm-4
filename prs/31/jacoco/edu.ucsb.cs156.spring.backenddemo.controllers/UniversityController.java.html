@@ -32,9 +32,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
         try {
 <span class="fc" id="L33">            String result = universityQueryService.getJSON(name);</span>
 <span class="fc" id="L34">            return ResponseEntity.ok().body(result);</span>
-<span class="nc" id="L35">        } catch (HttpClientErrorException e) {</span>
-<span class="nc" id="L36">            log.error(&quot;Error occurred while fetching data for university: {}&quot;, name, e);</span>
-<span class="nc" id="L37">            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());</span>
+<span class="fc" id="L35">        } catch (HttpClientErrorException e) {</span>
+<span class="fc" id="L36">            log.error(&quot;Error occurred while fetching data for university: {}&quot;, name, e);</span>
+<span class="fc" id="L37">            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());</span>
 <span class="nc" id="L38">        } catch (Exception e) {</span>
 <span class="nc" id="L39">            log.error(&quot;Unhandled error occurred&quot;, e);</span>
 <span class="nc" id="L40">            return ResponseEntity.badRequest().body(&quot;An error occurred while processing the request.&quot;);</span>
